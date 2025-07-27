@@ -1,0 +1,19 @@
+{
+  "name": "Eternal Safe",
+  "short_name": "Eternal Safe",
+  "description": "Eternal Safe is a decentralized fork of Safe{Wallet}. ",
+  "icons": [
+    {
+      "src": "/favicons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicons/android-chrome-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone"
+}

@@ -1,0 +1,23 @@
+name: 'Lint'
+on: [pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/workflows/yarn
+
+      - uses: CatChen/eslint-suggestion-action@v4.1.9
+        with:
+          request-changes: true # optional
+          fail-check: true # optional
+          github-token: ${{ secrets.GITHUB_TOKEN }} # optional
+          directory: './' # optional
+          targets: 'src' # optional
