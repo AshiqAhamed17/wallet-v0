@@ -28,6 +28,10 @@ const theme = createTheme({
     background: {
       default: '#f5f5f5',
     },
+    border: {},
+    logo: {},
+    backdrop: {},
+    static: {},
   },
   typography: {
     fontFamily: 'DMSans, Arial, sans-serif',
