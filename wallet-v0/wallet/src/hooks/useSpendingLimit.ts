@@ -1,6 +1,8 @@
 import { useSettingsStore } from '@/state/settingsStore'
 
-export const useSpendingLimit = () => {
+const useSpendingLimit = (tokenInfo?: any) => {
   const spendingLimits = useSettingsStore((state) => state.spendingLimits)
   return spendingLimits
 }
+
+export default useSpendingLimit

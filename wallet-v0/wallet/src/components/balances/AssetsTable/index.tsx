@@ -1,20 +1,20 @@
-import { type ReactElement, useContext } from 'react'
-import { Button, Tooltip, Typography, IconButton, Box, Skeleton, TableRow, TableCell } from '@mui/material'
-import type { TokenInfo } from '@safe-global/safe-gateway-typescript-sdk'
-import { TokenType } from '@safe-global/safe-gateway-typescript-sdk'
-import css from './styles.module.css'
-import TokenAmount from '@/components/common/TokenAmount'
-import TokenIcon from '@/components/common/TokenIcon'
-import EnhancedTable, { type EnhancedTableProps } from '@/components/common/EnhancedTable'
-import TokenExplorerLink from '@/components/common/TokenExplorerLink'
-import { VisibilityOutlined } from '@mui/icons-material'
-import useBalances from '@/hooks/useBalances'
+import AddTokenOrCollectible from '@/components/common/AddTokenOrCollectible'
 import CheckWallet from '@/components/common/CheckWallet'
-import useSpendingLimit from '@/hooks/useSpendingLimit'
+import EnhancedTable, { type EnhancedTableProps } from '@/components/common/EnhancedTable'
+import TokenAmount from '@/components/common/TokenAmount'
+import TokenExplorerLink from '@/components/common/TokenExplorerLink'
+import TokenIcon from '@/components/common/TokenIcon'
 import { TxModalContext } from '@/components/tx-flow'
 import { TokenTransferFlow } from '@/components/tx-flow/flows'
-import AddTokenOrCollectible from '@/components/common/AddTokenOrCollectible'
+import useBalances from '@/hooks/useBalances'
 import { useRemoveToken } from '@/hooks/useRemoveTokenOrCollectible'
+import useSpendingLimit from '@/hooks/useSpendingLimit'
+import { VisibilityOutlined } from '@mui/icons-material'
+import { Box, Button, IconButton, Skeleton, TableCell, TableRow, Tooltip, Typography } from '@mui/material'
+import type { TokenInfo } from '@safe-global/safe-gateway-typescript-sdk'
+import { TokenType } from '@safe-global/safe-gateway-typescript-sdk'
+import { type ReactElement, useContext } from 'react'
+import css from './styles.module.css'
 
 const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
   asset: {
@@ -135,12 +135,12 @@ const AssetsTable = (): ReactElement => {
               ),
             },
             balance: {
-              rawValue: Number(item.balance) / 10 ** item.tokenInfo.decimals,
+              rawValue: Number(item.balance) / 10 ** (item.tokenInfo.decimals || 18),
               collapsed: item.tokenInfo.address === removingToken,
               content: (
                 <TokenAmount
                   value={item.balance}
-                  decimals={item.tokenInfo.decimals}
+                  decimals={item.tokenInfo.decimals || 18}
                   tokenSymbol={item.tokenInfo.symbol}
                 />
               ),

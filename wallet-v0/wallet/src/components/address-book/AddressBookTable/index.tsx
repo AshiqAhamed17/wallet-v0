@@ -1,30 +1,30 @@
-import { useContext, useMemo, useState } from 'react'
 import { Box } from '@mui/material'
 import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
+import { useContext, useMemo, useState } from 'react'
 
-import EnhancedTable from '@/components/common/EnhancedTable'
 import type { AddressEntry } from '@/components/address-book/EntryDialog'
 import EntryDialog from '@/components/address-book/EntryDialog'
 import ExportDialog from '@/components/address-book/ExportDialog'
 import ImportDialog from '@/components/address-book/ImportDialog'
-import EditIcon from '@/public/images/common/edit.svg'
-import DeleteIcon from '@/public/images/common/delete.svg'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import Tooltip from '@mui/material/Tooltip'
 import RemoveDialog from '@/components/address-book/RemoveDialog'
-import EthHashInfo from '@/components/common/EthHashInfo'
-import AddressBookHeader from '../AddressBookHeader'
-import useAddressBook from '@/hooks/useAddressBook'
-import SvgIcon from '@mui/material/SvgIcon'
-import PagePlaceholder from '@/components/common/PagePlaceholder'
-import NoEntriesIcon from '@/public/images/address-book/no-entries.svg'
-import { useCurrentChain } from '@/hooks/useChains'
+import CheckWallet from '@/components/common/CheckWallet'
+import EnhancedTable from '@/components/common/EnhancedTable'
 import tableCss from '@/components/common/EnhancedTable/styles.module.css'
+import EthHashInfo from '@/components/common/EthHashInfo'
+import PagePlaceholder from '@/components/common/PagePlaceholder'
 import { TxModalContext, type TxModalContextType } from '@/components/tx-flow'
 import { TokenTransferFlow } from '@/components/tx-flow/flows'
-import CheckWallet from '@/components/common/CheckWallet'
+import useAddressBook from '@/hooks/useAddressBook'
+import { useCurrentChain } from '@/hooks/useChains'
+import NoEntriesIcon from '@/public/images/address-book/no-entries.svg'
+import DeleteIcon from '@/public/images/common/delete.svg'
+import EditIcon from '@/public/images/common/edit.svg'
 import madProps from '@/utils/mad-props'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import SvgIcon from '@mui/material/SvgIcon'
+import Tooltip from '@mui/material/Tooltip'
+import AddressBookHeader from '../AddressBookHeader'
 
 const headCells = [
   { id: 'name', label: 'Name' },
@@ -79,15 +79,15 @@ function AddressBookTable({ chain, setTxFlow }: AddressBookTableProps) {
 
     const query = searchQuery.toLowerCase()
     return addressBookEntries.filter(([address, name]) => {
-      return address.toLowerCase().includes(query) || name.toLowerCase().includes(query)
+      return address.toLowerCase().includes(query) || (name as string).toLowerCase().includes(query)
     })
   }, [addressBookEntries, searchQuery])
 
   const rows = filteredEntries.map(([address, name]) => ({
     cells: {
       name: {
-        rawValue: name,
-        content: name,
+        rawValue: name as string,
+        content: name as string,
       },
       address: {
         rawValue: address,
@@ -99,13 +99,19 @@ function AddressBookTable({ chain, setTxFlow }: AddressBookTableProps) {
         content: (
           <div className={tableCss.actions}>
             <Tooltip title="Edit entry" placement="top">
-              <IconButton onClick={() => handleOpenModalWithValues(ModalType.ENTRY, address, name)} size="small">
+              <IconButton
+                onClick={() => handleOpenModalWithValues(ModalType.ENTRY, address, name as string)}
+                size="small"
+              >
                 <SvgIcon component={EditIcon} inheritViewBox color="border" fontSize="small" />
               </IconButton>
             </Tooltip>
 
             <Tooltip title="Delete entry" placement="top">
-              <IconButton onClick={() => handleOpenModalWithValues(ModalType.REMOVE, address, name)} size="small">
+              <IconButton
+                onClick={() => handleOpenModalWithValues(ModalType.REMOVE, address, name as string)}
+                size="small"
+              >
                 <SvgIcon component={DeleteIcon} inheritViewBox color="error" fontSize="small" />
               </IconButton>
             </Tooltip>

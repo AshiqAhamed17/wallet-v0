@@ -1,21 +1,21 @@
-import DialogContent from '@mui/material/DialogContent'
-import DialogActions from '@mui/material/DialogActions'
-import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import Typography from '@mui/material/Typography'
 import type { ReactElement } from 'react'
 
 import ModalDialog from '@/components/common/ModalDialog'
+import useAddressBook from '@/hooks/useAddressBook'
+import useChainId from '@/hooks/useChainId'
 import { useAppDispatch } from '@/store'
 import { removeAddressBookEntry } from '@/store/addressBookSlice'
-import useChainId from '@/hooks/useChainId'
-import useAddressBook from '@/hooks/useAddressBook'
 
 const RemoveDialog = ({ handleClose, address }: { handleClose: () => void; address: string }): ReactElement => {
   const dispatch = useAppDispatch()
   const chainId = useChainId()
   const addressBook = useAddressBook()
 
-  const name = addressBook?.[address]
+  const name = (addressBook as Record<string, string>)?.[address]
 
   const handleConfirm = () => {
     dispatch(removeAddressBookEntry({ chainId, address }))
