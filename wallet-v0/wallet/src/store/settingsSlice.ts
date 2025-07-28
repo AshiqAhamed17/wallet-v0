@@ -1,6 +1,13 @@
-import type { TOKEN_LISTS as TOKEN_LISTS_TYPE } from './settingsSlice'
+// Temporary stub for settings slice
 
-export const selectSettings = (): { tokenList: TOKEN_LISTS_TYPE } => ({ tokenList: 'TRUSTED' as TOKEN_LISTS_TYPE })
+export const TOKEN_LISTS = {
+  TRUSTED: 'TRUSTED',
+  ALL: 'ALL',
+} as const
+
+export type TOKEN_LISTS = (typeof TOKEN_LISTS)[keyof typeof TOKEN_LISTS]
+
+export const selectSettings = () => ({ tokenList: 'TRUSTED' as TOKEN_LISTS })
 
 export const selectCurrency = () => ({})
 
@@ -21,10 +28,3 @@ export const setTransactionExecution = () => ({})
 export const setQrShortName = () => ({})
 
 export const setDarkMode = () => ({})
-
-export const TOKEN_LISTS = {
-  TRUSTED: 'TRUSTED',
-  ALL: 'ALL',
-} as const
-
-export type TOKEN_LISTS = (typeof TOKEN_LISTS)[keyof typeof TOKEN_LISTS]

@@ -1,2 +1,2 @@
 // Temporary stub for custom tokens slice
-export const add = () => ({})
+export const add = (data: any) => ({})

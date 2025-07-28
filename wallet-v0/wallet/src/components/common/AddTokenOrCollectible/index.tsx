@@ -1,9 +1,18 @@
-import { type BaseSyntheticEvent, type ReactElement, useEffect } from 'react'
-import React, { useState } from 'react'
-import Box from '@mui/material/Box'
 import PlusIcon from '@/public/images/common/plus.svg'
+import Box from '@mui/material/Box'
+import React, { type BaseSyntheticEvent, type ReactElement, useEffect, useState } from 'react'
 
-import css from './styles.module.css'
+import AddressInput from '@/components/common/AddressInput'
+import NameInput from '@/components/common/NameInput'
+import NumberInput from '@/components/common/NumberInput'
+import ErrorMessage from '@/components/tx/ErrorMessage'
+import { useCurrentChain } from '@/hooks/useChains'
+import { useCollectible } from '@/hooks/useCollectible'
+import { useToken } from '@/hooks/useToken'
+import { useAppDispatch } from '@/store'
+import { add as addCollectible } from '@/store/customCollectiblesSlice'
+import { add as addToken } from '@/store/customTokensSlice'
+import { isERC20Data, isERC721Data } from '@/utils/tokens'
 import {
   Button,
   CircularProgress,
@@ -15,20 +24,10 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material'
-import AddressInput from '@/components/common/AddressInput'
-import { FormProvider, useForm } from 'react-hook-form'
-import { useToken } from '@/hooks/useToken'
-import NameInput from '@/components/common/NameInput'
-import NumberInput from '@/components/common/NumberInput'
-import { useAppDispatch } from '@/store'
-import { add as addToken } from '@/store/customTokensSlice'
-import { add as addCollectible } from '@/store/customCollectiblesSlice'
 import { TokenType } from '@safe-global/safe-apps-sdk'
-import { useCurrentChain } from '@/hooks/useChains'
 import { getAddress } from 'ethers/lib/utils'
-import ErrorMessage from '@/components/tx/ErrorMessage'
-import { useCollectible } from '@/hooks/useCollectible'
-import { isERC20Data, isERC721Data } from '@/utils/tokens'
+import { FormProvider, useForm } from 'react-hook-form'
+import css from './styles.module.css'
 
 export type TokenEntry = {
   address: string
@@ -125,7 +124,8 @@ const AddTokenOrCollectible = ({
     if (data) {
       setValue('name', data.name, { shouldValidate: true })
       setValue('symbol', data.symbol, { shouldValidate: true })
-      if (isERC20Data(data) && variant === 'token') setValue('decimals', data.decimals, { shouldValidate: true })
+      if (isERC20Data(data) && variant === 'token')
+        setValue('decimals', data.decimals || undefined, { shouldValidate: true })
     }
   }, [data, setValue, variant])
 

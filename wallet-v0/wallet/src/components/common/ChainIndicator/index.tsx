@@ -1,13 +1,13 @@
 import { getChainLogo } from '@/config/chains'
-import type { ReactElement } from 'react'
-import { useMemo } from 'react'
-import classnames from 'classnames'
+import useChainId from '@/hooks/useChainId'
 import { useAppSelector } from '@/store'
 import { selectChainById, selectChains } from '@/store/chainsSlice'
-import css from './styles.module.css'
-import useChainId from '@/hooks/useChainId'
 import { Skeleton } from '@mui/material'
+import classnames from 'classnames'
 import isEmpty from 'lodash/isEmpty'
+import type { ReactElement } from 'react'
+import { useMemo } from 'react'
+import css from './styles.module.css'
 
 type ChainIndicatorProps = {
   chainId?: string
@@ -40,12 +40,12 @@ const ChainIndicator = ({
   const id = chainId || currentChainId
   const chains = useAppSelector(selectChains)
   const chainConfig =
-    useAppSelector((state) => selectChainById(state, id)) || (showUnknown ? fallbackChainConfig : null)
+    useAppSelector((state: any) => selectChainById(state, id)) || (showUnknown ? fallbackChainConfig : null)
   const noChains = isEmpty(chains.data)
 
   const style = useMemo(() => {
     if (!chainConfig) return
-    const { theme } = chainConfig
+    const { theme } = chainConfig as any
 
     return {
       backgroundColor: theme.backgroundColor,

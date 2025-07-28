@@ -1,10 +1,10 @@
+import { OnboardingTooltip } from '@/components/common/OnboardingTooltip'
+import { useHasFeature } from '@/hooks/useChains'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { selectSettings, setTokenList, TOKEN_LISTS } from '@/store/settingsSlice'
 import { FEATURES } from '@/utils/chains'
 import type { SelectChangeEvent } from '@mui/material'
-import { Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
-import { OnboardingTooltip } from '@/components/common/OnboardingTooltip'
-import { useHasFeature } from '@/hooks/useChains'
+import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 
 const LS_TOKENLIST_ONBOARDING = 'tokenlist_onboarding'
 
@@ -44,7 +44,7 @@ const TokenListSelect = () => {
         <Select
           labelId="tokenlist-select-label"
           id="tokenlist-select"
-          value={settings.tokenList}
+          value={settings.tokenList as TOKEN_LISTS}
           label="Tokenlist"
           onChange={handleSelectTokenList}
           renderValue={(value) => TokenListLabel[value]}

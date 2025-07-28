@@ -1,20 +1,22 @@
-import { type SyntheticEvent, useMemo, useCallback } from 'react'
-import { Accordion, AccordionDetails, AccordionSummary, Box, ButtonBase, ListItem, SvgIcon } from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import css from './styles.module.css'
-import { type DraftBatchItem } from '@/store/batchSlice'
-import TxType from '@/components/transactions/TxType'
-import TxInfo from '@/components/transactions/TxInfo'
-import DeleteIcon from '@/public/images/common/delete.svg'
-import DragIcon from '@/public/images/common/drag.svg'
+import { TxDataRow } from '@/components/transactions/TxDetails/Summary/TxDataRow'
 import TxData from '@/components/transactions/TxDetails/TxData'
 import { MethodDetails } from '@/components/transactions/TxDetails/TxData/DecodedData/MethodDetails'
-import { TxDataRow } from '@/components/transactions/TxDetails/Summary/TxDataRow'
+import TxInfo from '@/components/transactions/TxInfo'
+import TxType from '@/components/transactions/TxType'
+import DeleteIcon from '@/public/images/common/delete.svg'
+import DragIcon from '@/public/images/common/drag.svg'
+import { type DraftBatchItem } from '@/store/batchSlice'
 import { dateString } from '@/utils/formatters'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { Accordion, AccordionDetails, AccordionSummary, Box, ButtonBase, ListItem, SvgIcon } from '@mui/material'
+import { type SyntheticEvent, useCallback, useMemo } from 'react'
+import css from './styles.module.css'
 
 type BatchTxItemProps = DraftBatchItem & {
   id: string
   count: number
+  timestamp?: number
+  txDetails: any
   onDelete?: (id: string) => void
   draggable?: boolean
   dragging?: boolean
@@ -31,8 +33,9 @@ const BatchTxItem = ({
 }: BatchTxItemProps) => {
   const txSummary = useMemo(
     () => ({
-      timestamp,
+      timestamp: timestamp || Date.now(), // Provide default value
       id: txDetails.txId,
+      txHash: txDetails.txId, // Add missing txHash
       txInfo: txDetails.txInfo,
       txStatus: txDetails.txStatus,
       safeAppInfo: txDetails.safeAppInfo,
