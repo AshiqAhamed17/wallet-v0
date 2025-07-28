@@ -1,16 +1,23 @@
 // Temporary stub for old Redux store imports
 // This will be replaced with Zustand stores as we refactor
-import { TOKEN_LISTS } from './settingsSlice'
 
 export const useAppSelector = (selector: any) => {
-  // Stub implementation
   if (selector.name === 'selectSettings') {
-    return { tokenList: TOKEN_LISTS.TRUSTED }
+    return {
+      tokenList: 'TRUSTED',
+      shortName: {
+        show: false,
+        copy: false,
+      },
+    }
   }
   if (selector.name === 'selectAllAddressBooks') {
     return {} as Record<string, string>
   }
-  return {}
+  if (selector.name === 'selectChains') {
+    return { data: [] }
+  }
+  return undefined
 }
 
 export const useAppDispatch = () => {

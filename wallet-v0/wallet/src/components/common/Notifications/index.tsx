@@ -1,15 +1,15 @@
-import type { ReactElement, SyntheticEvent } from 'react'
-import { useCallback, useEffect } from 'react'
-import groupBy from 'lodash/groupBy'
 import { useAppDispatch, useAppSelector } from '@/store'
 import type { Notification } from '@/store/notificationsSlice'
 import { closeNotification, readNotification, selectNotifications } from '@/store/notificationsSlice'
+import { isRelativeUrl } from '@/utils/url'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import type { AlertColor, SnackbarCloseReason } from '@mui/material'
 import { Alert, Link, Snackbar, Typography } from '@mui/material'
-import css from './styles.module.css'
+import groupBy from 'lodash/groupBy'
 import NextLink from 'next/link'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { isRelativeUrl } from '@/utils/url'
+import type { ReactElement, SyntheticEvent } from 'react'
+import { useCallback, useEffect } from 'react'
+import css from './styles.module.css'
 
 const toastStyle = { position: 'static', margin: 1 }
 
@@ -98,7 +98,7 @@ const Notifications = (): ReactElement | null => {
   const notifications = useAppSelector(selectNotifications)
   const dispatch = useAppDispatch()
 
-  const visible = getVisibleNotifications(notifications)
+  const visible = getVisibleNotifications(Array.isArray(notifications) ? notifications : [])
 
   const handleClose = useCallback(
     (item: Notification) => {
@@ -110,7 +110,10 @@ const Notifications = (): ReactElement | null => {
 
   // Close previous notifications in the same group
   useEffect(() => {
-    const groups: Record<string, Notification[]> = groupBy(notifications, 'groupKey')
+    const groups = groupBy(
+      (Array.isArray(notifications) ? notifications : []).filter((n) => n && typeof n === 'object' && 'variant' in n),
+      'groupKey',
+    ) as Record<string, Notification[]>
 
     Object.values(groups).forEach((items) => {
       const previous = getVisibleNotifications(items).slice(0, -1)

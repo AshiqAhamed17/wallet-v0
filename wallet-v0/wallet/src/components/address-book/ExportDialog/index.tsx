@@ -1,16 +1,16 @@
-import DialogContent from '@mui/material/DialogContent'
-import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
 import Typography from '@mui/material/Typography'
-import { useCSVDownloader } from 'react-papaparse'
 import type { SyntheticEvent } from 'react'
 import { useMemo, type ReactElement } from 'react'
+import { useCSVDownloader } from 'react-papaparse'
 
-import ModalDialog from '@/components/common/ModalDialog'
-import { type AddressBookState, selectAllAddressBooks } from '@/store/addressBookSlice'
-import { useAppSelector } from '@/store'
 import ExternalLink from '@/components/common/ExternalLink'
+import ModalDialog from '@/components/common/ModalDialog'
 import { HelpCenterArticle } from '@/config/constants'
+import { useAppSelector } from '@/store'
+import { selectAllAddressBooks, type AddressBookState } from '@/store/addressBookSlice'
 import madProps from '@/utils/mad-props'
 
 const COL_1 = 'address'
@@ -90,7 +90,7 @@ function ExportDialog({
   )
 }
 
-const useAllAddressBooks = () => useAppSelector(selectAllAddressBooks)
+const useAllAddressBooks = () => (useAppSelector(selectAllAddressBooks) || {}) as Record<string, string>
 
 export default madProps(ExportDialog, {
   allAddressBooks: useAllAddressBooks,

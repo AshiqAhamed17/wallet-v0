@@ -7,7 +7,7 @@ export const selectChainById = (state: any, id: string) => ({
     textColor: '#ffffff',
   },
   nativeCurrency: {
-    logoUri: '',
+    logoUri: '', // must always be a string
   },
 })
 

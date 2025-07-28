@@ -1,10 +1,10 @@
-import { type ReactNode, useState, type ReactElement, useId } from 'react'
-import { IconButton, InputAdornment, InputLabel, OutlinedInput, SvgIcon, Typography } from '@mui/material'
-import EthHashInfo from '@/components/common/EthHashInfo'
-import SaveAddressIcon from '@/public/images/common/save-address.svg'
-import css from './styles.module.css'
 import EntryDialog from '@/components/address-book/EntryDialog'
+import EthHashInfo from '@/components/common/EthHashInfo'
 import useAddressBook from '@/hooks/useAddressBook'
+import SaveAddressIcon from '@/public/images/common/save-address.svg'
+import { IconButton, InputAdornment, InputLabel, OutlinedInput, SvgIcon, Typography } from '@mui/material'
+import { type ReactElement, type ReactNode, useId, useState } from 'react'
+import css from './styles.module.css'
 
 const AddressInputReadOnly = ({
   label,
@@ -38,7 +38,7 @@ const AddressInputReadOnly = ({
             </InputAdornment>
           }
           endAdornment={
-            !addressBook[address] ? (
+            !(addressBook as Record<string, string>)[address] ? (
               <InputAdornment position="end">
                 <IconButton onClick={() => setOpen(true)}>
                   <SvgIcon component={SaveAddressIcon} inheritViewBox fontSize="small" />

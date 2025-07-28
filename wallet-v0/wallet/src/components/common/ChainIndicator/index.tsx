@@ -41,7 +41,7 @@ const ChainIndicator = ({
   const chains = useAppSelector(selectChains)
   const chainConfig =
     useAppSelector((state: any) => selectChainById(state, id)) || (showUnknown ? fallbackChainConfig : null)
-  const noChains = isEmpty(chains.data)
+  const noChains = isEmpty(chains?.data)
 
   const style = useMemo(() => {
     if (!chainConfig) return
@@ -62,15 +62,24 @@ const ChainIndicator = ({
     >
       {showLogo && (
         <img
-          src={getChainLogo(chainConfig.chainId, chainConfig?.nativeCurrency?.logoUri)}
-          alt={`${chainConfig.chainName} Logo`}
+          src={
+            'chainId' in chainConfig
+              ? getChainLogo(
+                  chainConfig.chainId,
+                  typeof chainConfig.nativeCurrency === 'object' && chainConfig.nativeCurrency !== null
+                    ? (chainConfig.nativeCurrency as { logoUri: string }).logoUri
+                    : '',
+                )
+              : ''
+          }
+          alt={'chainName' in chainConfig ? `${chainConfig.chainName} Logo` : 'Chain Logo'}
           width={24}
           height={24}
           loading="lazy"
         />
       )}
 
-      {chainConfig.chainName}
+      {'chainName' in chainConfig ? chainConfig.chainName : ''}
     </span>
   ) : null
 }

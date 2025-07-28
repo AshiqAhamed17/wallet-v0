@@ -1,15 +1,15 @@
+import EntryDialog from '@/components/address-book/EntryDialog'
 import AddressInputReadOnly from '@/components/common/AddressInputReadOnly'
-import { type ReactElement, useState, useMemo } from 'react'
-import { Controller, get, useFormContext, useWatch } from 'react-hook-form'
+import useAddressBook from '@/hooks/useAddressBook'
+import InfoIcon from '@/public/images/notifications/info.svg'
+import inputCss from '@/styles/inputs.module.css'
 import { Box, SvgIcon, Typography } from '@mui/material'
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete'
-import useAddressBook from '@/hooks/useAddressBook'
+import { type ReactElement, useMemo, useState } from 'react'
+import { Controller, get, useFormContext, useWatch } from 'react-hook-form'
 import AddressInput, { type AddressInputProps } from '../AddressInput'
 import EthHashInfo from '../EthHashInfo'
-import InfoIcon from '@/public/images/notifications/info.svg'
-import EntryDialog from '@/components/address-book/EntryDialog'
 import css from './styles.module.css'
-import inputCss from '@/styles/inputs.module.css'
 
 const abFilterOptions = createFilterOptions({
   stringify: (option: { label: string; name: string }) => option.name + ' ' + option.label,
@@ -25,10 +25,12 @@ const AddressBookInput = ({ name, canAdd, ...props }: AddressInputProps & { canA
   const [open, setOpen] = useState(false)
   const [openAddressBook, setOpenAddressBook] = useState<boolean>(false)
 
-  const addressBookEntries = Object.entries(addressBook).map(([address, name]) => ({
-    label: address,
-    name,
-  }))
+  const addressBookEntries = Object.entries(addressBook)
+    .filter(([, name]) => typeof name === 'string')
+    .map(([address, name]) => ({
+      label: name as string,
+      name: name as string,
+    }))
 
   const hasVisibleOptions = useMemo(
     () => !!addressBookEntries.filter((entry) => entry.label.includes(addressValue)).length,
@@ -45,7 +47,7 @@ const AddressBookInput = ({ name, canAdd, ...props }: AddressInputProps & { canA
       }
     : undefined
 
-  if (addressBook[addressValue]) {
+  if ((addressBook as Record<string, string>)[addressValue]) {
     const fieldError = get(formState.errors, name)
 
     return (

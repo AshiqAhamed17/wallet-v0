@@ -1,14 +1,14 @@
+import NumberField from '@/components/common/NumberField'
+import { AutocompleteItem } from '@/components/tx-flow/flows/TokenTransfer/CreateTokenTransfer'
 import { safeFormatUnits } from '@/utils/formatters'
+import { validateDecimalLength, validateLimitedAmount } from '@/utils/validation'
+import { type BigNumber } from '@ethersproject/bignumber'
 import { Button, Divider, FormControl, InputLabel, MenuItem, TextField } from '@mui/material'
 import { type SafeBalanceResponse } from '@safe-global/safe-gateway-typescript-sdk'
-import css from './styles.module.css'
-import NumberField from '@/components/common/NumberField'
-import { validateDecimalLength, validateLimitedAmount } from '@/utils/validation'
-import { AutocompleteItem } from '@/components/tx-flow/flows/TokenTransfer/CreateTokenTransfer'
-import { useFormContext } from 'react-hook-form'
-import { type BigNumber } from '@ethersproject/bignumber'
 import classNames from 'classnames'
 import { useCallback } from 'react'
+import { useFormContext } from 'react-hook-form'
+import css from './styles.module.css'
 
 export enum TokenAmountFields {
   tokenAddress = 'tokenAddress',
@@ -40,7 +40,10 @@ const TokenAmountInput = ({
   const validateAmount = useCallback(
     (value: string) => {
       const decimals = selectedToken?.tokenInfo.decimals
-      return validateLimitedAmount(value, decimals, maxAmount?.toString()) || validateDecimalLength(value, decimals)
+      return (
+        validateLimitedAmount(value, decimals ?? undefined, maxAmount?.toString()) ||
+        validateDecimalLength(value, decimals ?? undefined)
+      )
     },
     [maxAmount, selectedToken?.tokenInfo.decimals],
   )
@@ -48,9 +51,13 @@ const TokenAmountInput = ({
   const onMaxAmountClick = useCallback(() => {
     if (!selectedToken || !maxAmount) return
 
-    setValue(TokenAmountFields.amount, safeFormatUnits(maxAmount.toString(), selectedToken.tokenInfo.decimals), {
-      shouldValidate: true,
-    })
+    setValue(
+      TokenAmountFields.amount,
+      safeFormatUnits(maxAmount.toString(), selectedToken.tokenInfo.decimals ?? undefined),
+      {
+        shouldValidate: true,
+      },
+    )
   }, [maxAmount, selectedToken, setValue])
 
   return (

@@ -1,10 +1,10 @@
-import { type ReactElement } from 'react'
 import useAddressBook from '@/hooks/useAddressBook'
 import useChainId from '@/hooks/useChainId'
 import { useAppSelector } from '@/store'
-import { selectSettings } from '@/store/settingsSlice'
 import { selectChainById } from '@/store/chainsSlice'
+import { selectSettings } from '@/store/settingsSlice'
 import { getBlockExplorerLink } from '@/utils/chains'
+import { type ReactElement } from 'react'
 import SrcEthHashInfo, { type EthHashInfoProps } from './SrcEthHashInfo'
 
 const EthHashInfo = ({
@@ -14,16 +14,19 @@ const EthHashInfo = ({
 }: EthHashInfoProps & { showName?: boolean }): ReactElement => {
   const settings = useAppSelector(selectSettings)
   const currentChainId = useChainId()
-  const chain = useAppSelector((state) => selectChainById(state, props.chainId || currentChainId))
+  const chain = useAppSelector((state: any) => selectChainById(state, props.chainId || currentChainId))
   const addressBook = useAddressBook()
-  const link = chain ? getBlockExplorerLink(chain, props.address) : undefined
-  const name = showName ? addressBook[props.address] || props.name : undefined
+  const link =
+    chain && typeof chain === 'object' && 'chainId' in chain
+      ? getBlockExplorerLink(chain as any, props.address)
+      : undefined
+  const name = showName ? (addressBook as Record<string, string>)[props.address] || props.name : undefined
 
   return (
     <SrcEthHashInfo
-      prefix={chain?.shortName}
-      showPrefix={settings.shortName.show}
-      copyPrefix={settings.shortName.copy}
+      prefix={typeof chain?.shortName === 'string' ? chain.shortName : undefined}
+      showPrefix={typeof settings?.shortName === 'object' && settings?.shortName?.show}
+      copyPrefix={typeof settings?.shortName === 'object' && settings?.shortName?.copy}
       {...props}
       name={name}
       customAvatar={props.customAvatar}

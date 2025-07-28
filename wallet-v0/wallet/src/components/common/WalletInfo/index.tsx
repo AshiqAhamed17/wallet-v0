@@ -1,17 +1,17 @@
+import ChainSwitcher from '@/components/common/ChainSwitcher'
+import EthHashInfo from '@/components/common/EthHashInfo'
 import WalletBalance from '@/components/common/WalletBalance'
 import { WalletIdenticon } from '@/components/common/WalletOverview'
-import { type BigNumber } from 'ethers'
-import { Box, Button, Typography } from '@mui/material'
-import css from './styles.module.css'
-import EthHashInfo from '@/components/common/EthHashInfo'
-import ChainSwitcher from '@/components/common/ChainSwitcher'
-import useOnboard, { type ConnectedWallet, switchWallet } from '@/hooks/wallets/useOnboard'
 import useAddressBook from '@/hooks/useAddressBook'
+import useChainId from '@/hooks/useChainId'
+import useOnboard, { type ConnectedWallet, switchWallet } from '@/hooks/wallets/useOnboard'
 import { useAppSelector } from '@/store'
 import { selectChainById } from '@/store/chainsSlice'
 import madProps from '@/utils/mad-props'
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew'
-import useChainId from '@/hooks/useChainId'
+import { Box, Button, Typography } from '@mui/material'
+import { type BigNumber } from 'ethers'
+import css from './styles.module.css'
 
 type WalletInfoProps = {
   wallet: ConnectedWallet
@@ -23,7 +23,7 @@ type WalletInfoProps = {
 }
 
 export const WalletInfo = ({ wallet, balance, currentChainId, onboard, addressBook, handleClose }: WalletInfoProps) => {
-  const chainInfo = useAppSelector((state) => selectChainById(state, wallet.chainId))
+  const chainInfo = useAppSelector((state: any) => selectChainById(state, wallet.chainId))
   const prefix = chainInfo?.shortName
 
   const handleSwitchWallet = () => {

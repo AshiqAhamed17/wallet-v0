@@ -44,7 +44,7 @@ const TokenListSelect = () => {
         <Select
           labelId="tokenlist-select-label"
           id="tokenlist-select"
-          value={settings.tokenList as TOKEN_LISTS}
+          value={(settings?.tokenList ?? 'TRUSTED') as TOKEN_LISTS}
           label="Tokenlist"
           onChange={handleSelectTokenList}
           renderValue={(value) => TokenListLabel[value]}

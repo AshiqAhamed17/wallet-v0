@@ -7,7 +7,13 @@ export const TOKEN_LISTS = {
 
 export type TOKEN_LISTS = (typeof TOKEN_LISTS)[keyof typeof TOKEN_LISTS]
 
-export const selectSettings = () => ({ tokenList: 'TRUSTED' as TOKEN_LISTS })
+export const selectSettings = () => ({
+  tokenList: 'TRUSTED' as TOKEN_LISTS,
+  shortName: {
+    show: false,
+    copy: false,
+  },
+})
 
 export const selectCurrency = () => ({})
 

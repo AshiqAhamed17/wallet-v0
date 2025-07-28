@@ -1,28 +1,27 @@
-import type { ReactElement } from 'react'
-import { useEffect, useCallback, useRef, useMemo } from 'react'
-import {
-  InputAdornment,
-  TextField,
-  type TextFieldProps,
-  CircularProgress,
-  IconButton,
-  SvgIcon,
-  Skeleton,
-} from '@mui/material'
-import { useFormContext, useWatch, type Validate, get } from 'react-hook-form'
-import { validatePrefixedAddress } from '@/utils/validation'
 import { useCurrentChain } from '@/hooks/useChains'
-import useNameResolver from './useNameResolver'
-import ScanQRButton from '../ScanQRModal/ScanQRButton'
-import { FEATURES, hasFeature } from '@/utils/chains'
-import { cleanInputValue, parsePrefixedAddress } from '@/utils/addresses'
 import useDebounce from '@/hooks/useDebounce'
 import CaretDownIcon from '@/public/images/common/caret-down.svg'
 import SaveAddressIcon from '@/public/images/common/save-address.svg'
-import classnames from 'classnames'
-import css from './styles.module.css'
 import inputCss from '@/styles/inputs.module.css'
+import { cleanInputValue, parsePrefixedAddress } from '@/utils/addresses'
+import { FEATURES, hasFeature } from '@/utils/chains'
+import { validatePrefixedAddress } from '@/utils/validation'
+import {
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  Skeleton,
+  SvgIcon,
+  TextField,
+  type TextFieldProps,
+} from '@mui/material'
+import classnames from 'classnames'
+import type { ReactElement } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { get, useFormContext, useWatch, type Validate } from 'react-hook-form'
 import Identicon from '../Identicon'
+import css from './styles.module.css'
+import useNameResolver from './useNameResolver'
 
 export type AddressInputProps = TextFieldProps & {
   name: string
@@ -96,8 +95,6 @@ const AddressInput = ({
               <SvgIcon component={SaveAddressIcon} inheritViewBox fontSize="small" color="primary" />
             </IconButton>
           )}
-
-          <ScanQRButton onScan={setAddressValue} />
 
           {onOpenListClick && (
             <IconButton
